@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Summary</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+
+    /* Back Button */
+    .back-button {
+      display: inline-block;
+      background-color: #6a8dad;
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .back-button:hover {
+      background-color: #587691;
+    }
+
+    .card {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 500px;
+      margin: 0 auto;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    #task-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #task-list li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      cursor: pointer;
+    }
+
+    .task-text {
+      flex-grow: 1;
+      margin-right: 10px;
+      word-break: break-word;
+    }
+
+    .done {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    .task-buttons {
+      display: none;
+      gap: 5px;
+    }
+
+    .task-buttons button {
+      padding: 5px 10px;
+      font-size: 0.9em;
+      cursor: pointer;
+    }
+
+    #task-form {
+      margin-top: 10px;
+    }
+
+    #new-task {
+      width: calc(100% - 60px);
+      padding: 8px;
+      margin-right: 5px;
+    }
+
+    #add-task-btn {
+      margin-top: 10px;
+      padding: 8px 12px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    /* Show buttons when .show-buttons is applied */
+    li.show-buttons .task-buttons {
+      display: flex;
+    }
+  </style>
+<body>
+  <section class="card task summary">
+    <h2>Task Summary</h2>
+    <p><strong>Completed:</strong> <span id="completed-count">0</span> |
+       <strong>Missing:</strong> <span id="missing-count">0</span></p>
+
+    <ul id="task-list"></ul>
+
+    <button id="add-task-btn">Add Task</button>
+
+    <form id="task-form" style="display: none;">
+      <input type="text" id="new-task" placeholder="Enter new task..." required>
+      <button type="submit">Save</button>
+    </form>
+  </section>
+
+  <script>
+    const taskList = document.getElementById('task-list');
+    const addTaskBtn = document.getElementById('add-task-btn');
+    const taskForm = document.getElementById('task-form');
+    const newTaskInput = document.getElementById('new-task');
+    const completedCount = document.getElementById('completed-count');
+    const missingCount = document.getElementById('missing-count');
+
+    let tasks = [];
+
+    function loadTasks() {
+      const saved = localStorage.getItem('tasks');
+      if (saved) {
+        tasks = JSON.parse(saved);
+      }
+    }
+
+    function saveTasks() {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    function updateCounts() {
+      const completed = tasks.filter(t => t.done).length;
+      const missing = tasks.length - completed;
+      completedCount.textContent = completed;
+      missingCount.textContent = missing;
+    }
+
+    function renderTasks() {
+      taskList.innerHTML = '';
+      tasks.forEach((task, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span class="task-text ${task.done ? 'done' : ''}">${task.text}</span>
+          <div class="task-buttons">
+            <button onclick="editTask(${index})">Edit</button>
+            <button onclick="deleteTask(${index})">Delete</button>
+            <button onclick="toggleDone(${index})">${task.done ? 'Undo' : 'Done'}</button>
+          </div>
+        `;
+
+        // Click on task text toggles button visibility
+        li.addEventListener('click', function(e) {
+          if (e.target.tagName.toLowerCase() !== 'button') {
+            li.classList.toggle('show-buttons');
+          }
+        });
+
+        taskList.appendChild(li);
+      });
+      updateCounts();
+      saveTasks();
+    }
+
+    function addTask(text) {
+      tasks.push({ text, done: false });
+      renderTasks();
+    }
+
+    function editTask(index) {
+      const newText = prompt("Edit task:", tasks[index].text);
+      if (newText) {
+        tasks[index].text = newText;
+        renderTasks();
+      }
+    }
+
+    function deleteTask(index) {
+      if (confirm("Are you sure to delete this task?")) {
+        tasks.splice(index, 1);
+        renderTasks();
+      }
+    }
+
+    function toggleDone(index) {
+      tasks[index].done = !tasks[index].done;
+      renderTasks();
+    }
+
+    addTaskBtn.addEventListener('click', () => {
+      taskForm.style.display = 'block';
+      newTaskInput.focus();
+    });
+
+    taskForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const taskText = newTaskInput.value.trim();
+      if (taskText !== '') {
+        addTask(taskText);
+        newTaskInput.value = '';
+        taskForm.style.display = 'none';
+      }
+    });
+
+    loadTasks();
+    renderTasks();
+  </script>
+</body>
+</html>

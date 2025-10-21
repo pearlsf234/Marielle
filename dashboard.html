@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
+</head>
+<body>
+
+<div class="app-container">
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-content" id="sidebarContent">
+      <h2>CLASS<br>SCHEDULE<br>ORGANIZER</h2>
+      <nav class="nav-links">
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="mytask.html">My Task</a>
+        <a href="myschedule.html">My Schedule</a>
+        <a href="logout.html">Log Out</a>
+      </nav>
+    </div>
+    <i class='bx bx-menu hamburger' id="hamburger"></i>
+  </div>
+
+  <!-- Main Section -->
+  <div class="main-section">
+
+    <div class="header">
+      <h1>WELCOME, STUDENT!</h1>
+      <div class="notification-container">
+        <div class="notification" id="notifBell">
+          <i class='bx bxs-bell'></i>
+          <span class="badge" id="notifBadge"></span>
+        </div>
+        <div class="notif-dropdown" id="notifDropdown">
+          <h4>Upcoming Classes</h4>
+          <ul class="notif-list" id="notifList">
+            <li>No notifications.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upcoming -->
+    <div class="card">
+      <h3>Upcoming Classes</h3>
+      <a href="upcoming.html" class="view-btn">View</a>
+    </div>
+
+    <div class="card">
+      <h3>Weekly Schedule</h3>
+      <div class="weekdays" id="weeklySchedule">
+        <div data-day="1"><strong>Mon</strong><ul></ul></div>
+        <div data-day="2"><strong>Tue</strong><ul></ul></div>
+        <div data-day="3"><strong>Wed</strong><ul></ul></div>
+        <div data-day="4"><strong>Thurs</strong><ul></ul></div>
+        <div data-day="5"><strong>Fri</strong><ul></ul></div>
+        <div data-day="6"><strong>Sat</strong><ul></ul></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Task Summary</h3>
+      <p>Complete:</p>
+      <p>Missing:</p>
+      <a href="mytask.html" class="view-btn">View</a>
+    </div>
+
+    
+    <div class="plus-btn" id="openForm">
+      <i class='bx bx-plus'></i>
+    </div>
+
+    <!-- Add Schedule Form -->
+    <div class="modal" id="scheduleModal" style="display:none;">
+      <div class="modal-content">
+        <span class="close-btn" id="closeForm" style="cursor:pointer;">&times;</span>
+        <h2>Add Schedule</h2>
+        <form id="scheduleForm">
+          <label for="title">Title</label>
+          <input type="text" id="title" required>
+
+          <label for="date">Date</label>
+          <input type="date" id="date" required>
+
+          <label for="time">Time</label>
+          <input type="time" id="time" required>
+
+          <input type="submit" value="Add Schedule">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Sidebar toggle
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const sidebarContent = document.getElementById('sidebarContent');
+
+  hamburger.onclick = () => {
+    sidebar.classList.toggle('collapsed');
+    sidebarContent.classList.toggle('hidden');
+  };
+
+  // Modal toggle
+  const openForm = document.getElementById('openForm');
+  const closeForm = document.getElementById('closeForm');
+  const modal = document.getElementById('scheduleModal');
+
+  openForm.onclick = () => modal.style.display = 'block';
+  closeForm.onclick = () => modal.style.display = 'none';
+  window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+
+  // Notification toggle
+  const notifBell = document.getElementById('notifBell');
+  const notifDropdown = document.getElementById('notifDropdown');
+
+  notifBell.onclick = () => {
+    notifDropdown.style.display = notifDropdown.style.display === 'block' ? 'none' : 'block';
+  };
+  window.addEventListener('click', e => {
+    if (!notifBell.contains(e.target) && !notifDropdown.contains(e.target)) {
+      notifDropdown.style.display = 'none';
+    }
+  });
+
+  // Save schedule and refresh UI
+  const scheduleForm = document.getElementById('scheduleForm');
+
+  scheduleForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const title = document.getElementById('title').value;
+    const date = document.getElementById('date').value;
+    const time = document.getElementById('time').value;
+
+    const newSchedule = { title, date, time };
+    const schedules = JSON.parse(localStorage.getItem('classSchedules')) || [];
+    schedules.push(newSchedule);
+    localStorage.setItem('classSchedules', JSON.stringify(schedules));
+
+    scheduleForm.reset();
+    modal.style.display = 'none';
+
+    updateWeeklySchedule();
+    checkUpcomingClasses();
+  });
+
+  function updateWeeklySchedule() {
+    const scheduleByDay = {
+      1: [], 2: [], 3: [], 4: [], 5: [], 6: []
+    };
+
+    const schedules = JSON.parse(localStorage.getItem('classSchedules')) || [];
+
+    schedules.forEach(schedule => {
+      const day = new Date(`${schedule.date}T${schedule.time}`).getDay();
+      if (day >= 1 && day <= 6) {
+        scheduleByDay[day].push(schedule);
+      }
+    });
+
+    const weekContainer = document.getElementById('weeklySchedule');
+    weekContainer.querySelectorAll('[data-day]').forEach(div => {
+      const dayNum = div.getAttribute('data-day');
+      const ul = div.querySelector('ul');
+      ul.innerHTML = '';
+
+      if (scheduleByDay[dayNum]) {
+        scheduleByDay[dayNum].forEach((item, index) => {
+          const li = document.createElement('li');
+          li.textContent = `${item.title} @ ${item.time}`;
+          li.dataset.index = index;
+          ul.appendChild(li);
+        });
+      }
+    });
+  }
+
+  function checkUpcomingClasses() {
+    const badge = document.getElementById('notifBadge');
+    const notifList = document.getElementById('notifList');
+    notifList.innerHTML = '';
+
+    const schedules = JSON.parse(localStorage.getItem('classSchedules')) || [];
+    const now = new Date();
+    const next24h = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+
+    const upcoming = schedules.filter(schedule => {
+      const dateTime = new Date(`${schedule.date}T${schedule.time}`);
+      return dateTime >= now && dateTime <= next24h;
+    });
+
+    if (upcoming.length > 0) {
+      badge.style.display = 'inline-block';
+      badge.textContent = upcoming.length;
+    } else {
+      badge.style.display = 'none';
+    }
+
+    if (upcoming.length === 0) {
+      notifList.innerHTML = '<li>No upcoming classes in the next 24 hours.</li>';
+    } else {
+      upcoming.forEach(cls => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${cls.title}</strong><br><small>${cls.date} @ ${cls.time}</small>`;
+        notifList.appendChild(li);
+      });
+    }
+  }
+
+  document.getElementById('weeklySchedule').addEventListener('click', function (e) {
+    if (e.target.tagName === 'LI') {
+      
+      document.querySelectorAll('.action-buttons').forEach(btn => btn.remove());
+
+      const btnContainer = document.createElement('span');
+      btnContainer.classList.add('action-buttons');
+
+      const doneBtn = document.createElement('button');
+      doneBtn.textContent = 'Done';
+      doneBtn.style.marginLeft = '10px';
+      doneBtn.onclick = () => {
+        e.target.style.textDecoration = 'line-through';
+        btnContainer.remove();
+      };
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.style.marginLeft = '5px';
+      deleteBtn.onclick = () => {
+        const schedules = JSON.parse(localStorage.getItem('classSchedules')) || [];
+        const dayDiv = e.target.closest('[data-day]');
+        const dayNum = dayDiv.getAttribute('data-day');
+
+        
+        const newSchedules = schedules.filter(s =>
+          !(new Date(`${s.date}T${s.time}`).getDay() == dayNum &&
+            `${s.title} @ ${s.time}` === e.target.textContent.replace('DoneDelete', '').trim())
+        );
+
+        localStorage.setItem('classSchedules', JSON.stringify(newSchedules));
+        updateWeeklySchedule();
+        checkUpcomingClasses();
+      };
+
+      btnContainer.appendChild(doneBtn);
+      btnContainer.appendChild(deleteBtn);
+      e.target.appendChild(btnContainer);
+    }
+  });
+
+  
+  updateWeeklySchedule();
+  checkUpcomingClasses();
+</script>
+
+</body>
+</html>

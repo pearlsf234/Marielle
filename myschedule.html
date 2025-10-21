@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Schedule</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="header">
+    <h1>My Class Schedule</h1>
+    <a href="dashboard.html" class="back-button">Back</a>
+  </div>
+
+  <div class="schedule-container" id="scheduleContainer">
+    <div class="time-label"></div>
+    <div class="day-label">Monday</div>
+    <div class="day-label">Tuesday</div>
+    <div class="day-label">Wednesday</div>
+    <div class="day-label">Thursday</div>
+    <div class="day-label">Friday</div>
+    <div class="day-label">Saturday</div>
+  </div>
+
+  <div class="popup-form" id="popupForm">
+    <h3>Edit Schedule</h3>
+    <input type="text" id="subjectInput" placeholder="Enter subject" />
+    <div class="popup-buttons">
+      <button onclick="saveSchedule()">Save</button>
+      <button onclick="closeForm()">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    const times = [
+      "7:00 - 8:00", "8:00 - 9:00", "9:00 - 10:00", "10:00 - 11:00",
+      "11:00 - 12:00", "12:00 - 1:00", "1:00 - 2:00", "2:00 - 3:00",
+      "3:00 - 4:00", "4:00 - 5:00"
+    ];
+    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const scheduleContainer = document.getElementById("scheduleContainer");
+
+    // Generate time slots dynamically
+    times.forEach(time => {
+      const timeLabel = document.createElement('div');
+      timeLabel.className = 'time-label';
+      timeLabel.textContent = time;
+      scheduleContainer.appendChild(timeLabel);
+
+      days.forEach(day => {
+        const box = document.createElement('div');
+        box.className = 'class-box';
+        box.dataset.day = day;
+        box.dataset.time = time;
+
+        // Load saved data from localStorage
+        const key = `${day}-${time}`;
+        const savedData = localStorage.getItem(key);
+        if (savedData) {
+          box.textContent = savedData;
+        }
+
+        box.addEventListener('click', () => openForm(box));
+        scheduleContainer.appendChild(box);
+      });
+    });
+
+    let currentBox = null;
+
+    function openForm(box) {
+      currentBox = box;
+      document.getElementById('subjectInput').value = box.textContent;
+      document.getElementById('popupForm').style.display = 'block';
+    }
+
+    function saveSchedule() {
+      const input = document.getElementById('subjectInput').value.trim();
+      if (currentBox) {
+        currentBox.textContent = input;
+
+        // Save tolocalStorage
+        const key = `${currentBox.dataset.day}-${currentBox.dataset.time}`;
+        localStorage.setItem(key, input);
+      }
+      closeForm();
+    }
+
+    function closeForm() {
+      document.getElementById('popupForm').style.display = 'none';
+      document.getElementById('subjectInput').value = '';
+      currentBox = null;
+    }
+  </script>
+
+</body>
+</html>

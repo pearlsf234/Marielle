@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upcoming Classes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: auto;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 15px;
+      background: #f9f9f9;
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+    }
+    li:hover {
+      background: #f1f1f1;
+    }
+    .btn-group {
+      display: none;
+      margin-top: 6px;
+    }
+    .btn-group button {
+      font-size: 12px;
+      padding: 4px 10px;
+      margin-right: 5px;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+    }
+    .done-small {
+      background: #007bff;
+      color: white;
+    }
+    .delete-small {
+      background: #dc3545;
+      color: white;
+    }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      color: #007bff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="upcoming-classes-card">
+    <h2>Upcoming Classes</h2>
+    <ul id="full-upcoming-list"></ul>
+    <a href="dashboard.html">←</a>
+  </div>
+
+<script>
+  function loadUpcomingClasses() {
+    const list = document.getElementById('full-upcoming-list');
+    list.innerHTML = '';
+
+    const schedules = JSON.parse(localStorage.getItem('classSchedules')) || [];
+    const now = new Date();
+    const next24h = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+
+    const upcoming = schedules.filter(schedule => {
+      const scheduleDate = new Date(`${schedule.date}T${schedule.time}`);
+      return scheduleDate >= now && scheduleDate <= next24h && !schedule.done;
+    });
+
+    if (upcoming.length === 0) {
+      list.innerHTML = '<li>No upcoming classes within 24 hours.</li>';
+    } else {
+      upcoming.forEach(schedule => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <strong>${schedule.title}</strong><br>
+          <small>${schedule.date} @ ${schedule.time}</small>
+          <div class="btn-group">
+            <button class="done-small">Done</button>
+            <button class="delete-small">Delete</button>
+          </div>
+        `;
+
+        // Toggle buttons on click
+        li.addEventListener('click', function(e) {
+          const btnGroup = this.querySelector('.btn-group');
+          btnGroup.style.display = btnGroup.style.display === 'block' ? 'none' : 'block';
+          e.stopPropagation();
+        });
+
+        // Done action
+        li.querySelector('.done-small').onclick = (e) => {
+          e.stopPropagation();
+          updateStatus(schedule, 'done');
+        };
+
+        // Delete action
+        li.querySelector('.delete-small').onclick = (e) => {
+          e.stopPropagation();
+          updateStatus(schedule, 'delete');
+        };
+
+        list.appendChild(li);
+      });
+    }
+  }
+
+  function updateStatus(schedule, action) {
+    let schedules = JSON.parse(localStorage.getItem('classSchedules')) || [];
+    const index = schedules.findIndex(s =>
+      s.title === schedule.title &&
+      s.date === schedule.date &&
+      s.time === schedule.time
+    );
+
+    if (index !== -1) {
+      if (action === 'done') {
+        schedules[index].done = true;
+      } else if (action === 'delete') {
+        schedules.splice(index, 1);
+      }
+      localStorage.setItem('classSchedules', JSON.stringify(schedules));
+      loadUpcomingClasses();
+    }
+  }
+
+  window.onload = loadUpcomingClasses;
+</script>
+
+</body>
+</html>

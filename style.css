@@ -1,0 +1,700 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: #f1f4fa;
+}
+
+/* App Container */
+.app-container {
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background-color: #3c5a8b;
+  color: white;
+  min-height: 100vh;
+  padding: 20px;
+  padding-right: 0;
+  transition: 0.3s ease;
+  position: relative;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.sidebar .hamburger {
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: -15px;
+  background-color: #3c5a8b;
+  border-radius: 4px;
+  padding: 5px;
+  z-index: 100;
+}
+
+.sidebar-content.hidden {
+  display: none;
+}
+
+.sidebar-content h2 {
+  font-size: 20px;
+  line-height: 1.4;
+  margin-bottom: 30px;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  margin: 15px 0;
+  font-weight: bold;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+/* Main Section */
+.main-section {
+  flex: 1;
+  padding: 30px;
+  position: relative;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.notification {
+  position: relative;
+}
+
+.notification i {
+  font-size: 28px;
+  color: #ffcb05;
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+
+/* Cards */
+.card {
+  background-color: #a9c1e8;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+.weekdays {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.weekdays div {
+  background-color: #cbdcf2;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  flex: 1;
+  font-weight: bold;
+}
+
+/* Buttons */
+.view-btn {
+  margin-top: 10px;
+  padding: 6px 18px;
+  background-color: #528abe;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Plus Button */
+.plus-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: #6a8dad;
+  color: white;
+  font-size: 30px;
+  padding: 12px 16px;
+  border-radius: 50%;
+  box-shadow: 0px 3px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+
+/*myschedule*/
+
+body {
+  font-family: sans-serif;
+  background-color: #f1f4fa;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+.back-button {
+  background-color: #f1f4fa;
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+/* Schedule Grid */
+.schedule-container {
+  display: grid;
+  grid-template-columns: 100px repeat(6, 1fr);
+  gap: 1px;
+  margin-top: 20px;
+  background-color: #ccc;
+}
+
+.time-label {
+  background-color: #6a8dad;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.day-label {
+  background-color: #6a8dad;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}
+
+.class-box {
+  background-color: white;
+  height: 60px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.class-box:hover {
+  background-color: white;
+}
+
+/* Pop-up Form */
+.popup-form {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  background-color: white;
+  border: 2px solid #6a8dad;
+  border-radius: 10px;
+  padding: 20px;
+  z-index: 100;
+  display: none;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+}
+
+.popup-form h3 {
+  margin-bottom: 10px;
+}
+
+.popup-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.popup-buttons button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.popup-buttons button:first-child {background-color:#ccc;
+}
+
+
+/*tasksummary*/
+
+
+/*s,l,lo*/
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+input[type="time"] {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0 16px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button,
+input[type="submit"] {
+  width: 100%;
+  background-color: #1b55b2;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover,
+input[type="submit"]:hover {
+  background-color: #0d2245;
+}
+
+a {
+  color: #395e98;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/*Flash Message*/
+.flash {
+  color: rgb(249, 7, 7);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/*log out*/
+
+.center-box {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #3c69b2;
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+
+/*Login & Signup Pages */
+form p {
+  max-width: 400px;          
+  margin: 100px auto;         
+  padding: 30px;
+  background-color: #fff;     
+  box-shadow: 0 4px 10px rgb(252, 252, 252); 
+  border-radius: 8px;    
+  box-sizing: border-box;     
+ 
+}
+form p {
+  text-align: center;
+  font-size: 14px;
+  margin: 0 0 10px 0; 
+}
+
+form p a {
+  font-weight: bold;
+}
+
+form p a:hover {
+  text-decoration: underline;
+}
+
+/*upcomingclass*/
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background-color: #f4f4f4;
+  padding: 20px;
+  color: #333;
+}
+
+/* Card layout */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+/* Upcoming Classes Card */
+#upcoming-classes-card h3 {
+  font-size: 1.4em;
+  margin-bottom: 10px;
+}
+
+#upcoming-classes-list {
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+#upcoming-classes-list li {
+  padding: 8px 12px;
+  border-left: 4px solid #007bff;
+  background: #f9f9f9;
+  margin-bottom: 8px;
+  border-radius: 5px;
+}
+
+/* View Button */
+.view-btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #3c69b2;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.view-btn:hover {
+  background-color: #3c69b2;
+}
+
+/* Full Upcoming Page */
+h2 {
+  margin-bottom: 15px;
+  font-size: 1.6em;
+}
+
+#full-upcoming-list {
+  list-style: none;
+}
+
+#full-upcoming-list li {
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-left: 4px solid #3c69b2;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Back Link */
+a[href="dashboard.html"] {
+  display: inline-block;
+  margin-top: 20px;
+  text-decoration: none;
+  color: #3c69b2;
+}
+
+a[href="dashboard.html"]:hover {
+  text-decoration: underline;
+}
+
+/*addplusbutn*/
+
+.plus-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #007BFF;
+  color: white;
+  padding: 15px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background: white;
+  margin: 10% auto;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 10px;
+}
+
+.close-btn {
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/*plusadbuttn*/
+.plus-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #007BFF;
+  color: white;
+  padding: 15px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background: white;
+  margin: 10% auto;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 10px;
+}
+
+.close-btn {
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
+/*Notification bell*/
+
+.notification-container {
+  position: relative;
+}
+
+.notification {
+  position: relative;
+  cursor: pointer;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 10px;
+}
+
+.notif-dropdown {
+  display: none;
+  position: absolute;
+  top: 35px;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  width: 250px;
+  z-index: 1000;
+  border-radius: 6px;
+}
+
+.notif-dropdown h4 {
+  margin: 0;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.notif-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.notif-list li {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  font-size: 13px;
+}
+
+.notif-list li:last-child {
+  border-bottom: none;
+}
+
+.notif-list li small {
+  color: gray;
+}
+
+/*addscheddashboard*/
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+
+.weekdays div {
+  background: #fff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  min-height: 80px;
+}
+
+.weekdays ul {
+  margin: 5px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.weekdays li {
+  display: flex;
+  align-items: center; 
+  gap: 5px; 
+}
+
+.weekdays li button {
+  font-size: 12px;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 3px;
+  height: 24px; 
+  line-height: 1;
+}
+
+
+/*action buttons weekly schedule */
+.action-buttons {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 10px;
+  width: 80px; 
+}
+
+/* Common button style */
+.action-buttons button {
+  width: 100%; 
+  padding: 4px 8px;
+  font-size: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+/* Done button  */
+.action-buttons button:first-child {
+  background-color: #4a28a5;
+  color: white;
+  margin-top: 4px;
+}
+
+/* Delete button */
+.action-buttons button:last-child {
+  background-color: #e74c3c;
+  color: white;
+  margin-top: 4px;
+}
+
+/* Hover effects */
+.action-buttons button:first-child:hover {
+  background-color: #4a28a5;
+}
+.action-buttons button:last-child:hover {
+  background-color: #c0392b;
+}
+
+
